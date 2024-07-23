@@ -42,6 +42,9 @@ public class Users { //UserDetails representa al Usuario logeado en Spring Secur
     @JsonManagedReference
     private List<Comments> commentsList;
 
+    @OneToMany(mappedBy = "users",cascade = CascadeType.PERSIST,targetEntity = Favorites.class)
+    @JsonManagedReference
+    private List<Favorites> favoritesList;
 
 //    //Implementaciones de los metodos UserDetails
 //    @Override
