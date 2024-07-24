@@ -11,25 +11,16 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProduct;
-
-    @Column(unique = true)
     private String name;
-
-    @Column(name = "id_user")
-    private Long idUser;
-
     private String description;
-
     @Column(name = "creation_date")
     private Date creationDate;
-
     private boolean available;
-    private boolean state;
-
     private String imageURL;
 
     @ManyToOne
@@ -43,5 +34,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, targetEntity = Comments.class)
     @JsonManagedReference
     private List<Comments> commentsList;
+
+    @Enumerated(EnumType.STRING)
+    private State state;
+
 
 }

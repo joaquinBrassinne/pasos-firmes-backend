@@ -32,6 +32,8 @@ public class Users { //UserDetails representa al Usuario logeado en Spring Secur
     private String phoneNumber;
     private String province;
     private String userPhoto;
+    private Long socialWorkNumber;
+    private Long disabilityCertificateNumber;
 
 
     @OneToMany(mappedBy = "users",cascade = CascadeType.PERSIST, targetEntity = Product.class)

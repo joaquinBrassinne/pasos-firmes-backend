@@ -36,6 +36,8 @@ public class UserService implements IUserService {
                 .phoneNumber(userDTO.getPhoneNumber())
                 .province(userDTO.getProvince())
                 .userPhoto(userDTO.getPhotoUser())
+                .socialWorkNumber(userDTO.getSocialWorkNumber())
+                .disabilityCertificateNumber(userDTO.getDisabilityCertificateNumber())
                 .build();
         //userCreated.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
@@ -86,6 +88,7 @@ public class UserService implements IUserService {
         usersEdited.setEmail(userDTO.getEmail());
         usersEdited.setBirthday(userDTO.getBirthday());
         usersEdited.setPhoneNumber(userDTO.getPhoneNumber());
+
 
         return this.userRepository.save(usersEdited);
     }
