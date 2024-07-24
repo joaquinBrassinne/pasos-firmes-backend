@@ -8,7 +8,6 @@ import com.nocountry.apiS16.repository.ICategoryRepository;
 import com.nocountry.apiS16.repository.IProductRepository;
 import com.nocountry.apiS16.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,37 +22,30 @@ public class ProductService {
 
     private final IUserRepository userRepository;
 
+
     public Product createProduct(ProductDTO productDTO) throws ResourceNotFoundException {
 
         Optional<Users> users = this.userRepository.findById(productDTO.getIdUser());
 
-        Category category = iCategoryRepository.findById(productDTO.getIdProduct())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + productDTO.getIdProduct()));
+        Optional<Category> category = iCategoryRepository.findById(productDTO.getCategoryId());
 
-        if (users.isEmpty()){
-            throw new ResourceNotFoundException("User dont found");
-        }
 
-        if (productDTO == null) {
-            throw new ResourceNotFoundException("ProductDTO object cannot be null");
-        }
-        if (productDTO.getName() == null || productDTO.getName().isEmpty()) {
-            throw new ResourceNotFoundException("Product name required");
-        }
-        if (productDTO.getCategory() == null) {
-            throw new ResourceNotFoundException("Category cannot be null");
-        }
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setCreationDate(productDTO.getCreationDate());
-        product.setAvailable(productDTO.isAvailable());
-        product.setState(productDTO.isState());
-        product.setImageURL(productDTO.getImageURL());
-        product.setCategory(category);
-        product.setUsers(users.get());
+        if(users.isPresent() && category.isPresent()) {
 
-        return iProductRepository.save(product);
+            Product product = Product.builder()
+                    .name(productDTO.getName())
+                    .description(productDTO.getDescription())
+                    .creationDate(productDTO.getCreationDate())
+                    .available(productDTO.isAvailable())
+                    .imageURL(productDTO.getImageURL())
+                    .category(category.get())
+                    .users(users.get())
+                    .state(productDTO.getState())
+                    .build();
+            return this.iProductRepository.save(product);
+        }else {
+            throw new ResourceNotFoundException("User or category no present with that id");
+        }
 
     }
 
@@ -87,7 +79,6 @@ public class ProductService {
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setCreationDate(productDTO.getCreationDate());
         existingProduct.setAvailable(productDTO.isAvailable());
-        existingProduct.setState(productDTO.isState());
         existingProduct.setCategory(category);
 
         return iProductRepository.save(existingProduct);
