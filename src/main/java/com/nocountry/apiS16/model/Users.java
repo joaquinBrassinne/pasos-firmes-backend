@@ -36,6 +36,7 @@ public class Users { //UserDetails representa al Usuario logeado en Spring Secur
     private Long disabilityCertificateNumber;
 
 
+
     @OneToMany(mappedBy = "users",cascade = CascadeType.PERSIST, targetEntity = Product.class)
     @JsonManagedReference
     private List<Product> productList;
