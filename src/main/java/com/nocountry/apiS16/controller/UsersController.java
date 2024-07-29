@@ -4,9 +4,13 @@ import com.nocountry.apiS16.dto.RegisteredUserDTO;
 import com.nocountry.apiS16.dto.UserDTO;
 import com.nocountry.apiS16.exceptions.ObjectNotFoundException;
 import com.nocountry.apiS16.model.Users;
+import com.nocountry.apiS16.service.auth.AuthenticationService;
 import com.nocountry.apiS16.service.interfaces.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springdoc.api.ErrorMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UsersController {
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     private final IUserService userService;
 

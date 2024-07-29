@@ -1,6 +1,7 @@
 package com.nocountry.apiS16.controller;
 
 import com.nocountry.apiS16.dto.ProductDTO;
+import com.nocountry.apiS16.dto.ProductGetDTO;
 import com.nocountry.apiS16.exceptions.ResourceNotFoundException;
 import com.nocountry.apiS16.model.Product;
 import com.nocountry.apiS16.service.implementations.ProductService;
@@ -21,14 +22,14 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/add")
-    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) throws ResourceNotFoundException {
+    public ProductGetDTO createProduct(@RequestBody ProductDTO productDTO) throws ResourceNotFoundException {
         Product createdProduct = productService.createProduct(productDTO);
         return productService.convertToProductDTO(createdProduct);
     }
 
     @GetMapping("/get")
-    public List<ProductDTO> getAllProducts() {
-        List<ProductDTO> productDTOs = productService.getAllProductDTOs();
+    public List<ProductGetDTO> getAllProducts() {
+        List<ProductGetDTO> productDTOs = productService.getAllProductDTOs();
         if (productDTOs.isEmpty()) {
             return new ArrayList<>();
         }
@@ -37,13 +38,13 @@ public class ProductController {
     }
 
     @GetMapping("/get/name/{name}")
-    public ProductDTO getProductByName(@PathVariable String name) throws ResourceNotFoundException {
+    public ProductGetDTO getProductByName(@PathVariable String name) throws ResourceNotFoundException {
         return productService.getProductByName(name);
     }
 
     @GetMapping("/user/{id_user}")
-    public ResponseEntity<List<ProductDTO>> getProductsByUserId(@PathVariable Long id_user) {
-        List<ProductDTO> products = productService.getProductsByUserId(id_user);
+    public ResponseEntity<List<ProductGetDTO>> getProductsByUserId(@PathVariable Long id_user) {
+        List<ProductGetDTO> products = productService.getProductsByUserId(id_user);
         if (products.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
@@ -51,19 +52,22 @@ public class ProductController {
         }
     }
     @PutMapping("/{id}")
-    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) throws ResourceNotFoundException{
+    public ProductGetDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) throws ResourceNotFoundException{
         Product updatedProduct = productService.updateProduct(id, productDTO);
         return productService.convertToProductDTO(updatedProduct);
     }
 
     @GetMapping("/{id}")
-    public ProductDTO getProductById(@PathVariable Long id) throws ResourceNotFoundException  {
-        ProductDTO productDTO = productService.getProductById(id);
-        if (productDTO == null) {
-            throw new ResourceNotFoundException("Category not found with id: " + id);
-        }
-        return productDTO;
+    public ProductGetDTO getProductById(@PathVariable Long id) throws ResourceNotFoundException {
+        return productService.getProductById(id); // Retorna directamente el ProductDTO
     }
+//    public ProductDTO getProductById(@PathVariable Long id) throws ResourceNotFoundException {
+//        ProductDTO productDTO = productService.getProductById(id);
+//        if (productDTO == null) {
+//            throw new ResourceNotFoundException("Product not found with id: " + id);
+//        }
+//        return productDTO;
+//    }
 
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.nocountry.apiS16.service.implementations;
 import com.nocountry.apiS16.dto.ProductDTO;
+import com.nocountry.apiS16.dto.ProductGetDTO;
 import com.nocountry.apiS16.exceptions.ResourceNotFoundException;
 import com.nocountry.apiS16.model.Category;
 import com.nocountry.apiS16.model.Product;
@@ -10,7 +11,6 @@ import com.nocountry.apiS16.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,12 +52,12 @@ public class ProductService {
 
     }
 
-    public List<ProductDTO> getAllProductDTOs() {
+    public List<ProductGetDTO> getAllProductDTOs() {
         List<Product> products = iProductRepository.findAll();
         return products.stream().map(this::convertToProductDTO).collect(Collectors.toList());
     }
 
-    public ProductDTO getProductById(Long id) throws ResourceNotFoundException {
+    public ProductGetDTO getProductById(Long id) throws ResourceNotFoundException {
         Product product = iProductRepository.findById(id).orElse(null);
         if (product == null) {
             throw new ResourceNotFoundException("Product not found with id: " + id);
@@ -65,7 +65,7 @@ public class ProductService {
         return convertToProductDTO(product);
     }
 
-    public ProductDTO getProductByName(String name) throws ResourceNotFoundException {
+    public ProductGetDTO getProductByName(String name) throws ResourceNotFoundException {
      Optional<Product> optionalProduct= iProductRepository.findByName(name);
 
         if (optionalProduct.isPresent()) {
@@ -102,11 +102,14 @@ public class ProductService {
         }
 
     }
-    public ProductDTO convertToProductDTO(Product product) {
-        ProductDTO productDTO = new ProductDTO();
+    public ProductGetDTO convertToProductDTO(Product product) {
+        
+        ProductGetDTO productDTO = new ProductGetDTO();
+
+        productDTO.setId(product.getIdProduct());
         productDTO.setName(product.getName());
         productDTO.setDescription(product.getDescription());
-        productDTO.setCreationDate(product.getCreationDate());
+        productDTO.setCreationDate(product.getCreationDate().toString());
         productDTO.setAvailable(product.isAvailable());
         productDTO.setImageURL(product.getImageURL());
         productDTO.setCategoryId(product.getCategory().getIdCategory());
@@ -120,12 +123,13 @@ public class ProductService {
             productDTO.setUserEmail(user.getEmail());
             productDTO.setUserProvince(user.getProvince());
         }
+        
 
 
         return productDTO;
     }
 
-    public List<ProductDTO> getProductsByUserId(Long id_user) {
+    public List<ProductGetDTO> getProductsByUserId(Long id_user) {
         List<Product> products = iProductRepository.findProductsByUserId(id_user);
         return products.stream().map(this::convertToProductDTO).collect(Collectors.toList());
     }
