@@ -1,6 +1,8 @@
 package com.nocountry.apiS16.controller;
 
+import com.nocountry.apiS16.dto.RegisteredUserDTO;
 import com.nocountry.apiS16.dto.UserDTO;
+import com.nocountry.apiS16.exceptions.ObjectNotFoundException;
 import com.nocountry.apiS16.model.Users;
 import com.nocountry.apiS16.service.interfaces.IUserService;
 import jakarta.validation.Valid;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -35,7 +38,7 @@ public class UsersController {
         }
     }
 
-    @GetMapping("get/{id_user}")
+    @GetMapping("/get/{id_user}")
     public ResponseEntity<Users> findUser(@PathVariable Long id_user){
         Users usersFinded = this.userService.findUserById(id_user);
 
@@ -46,6 +49,7 @@ public class UsersController {
 
         }
     }
+
 
     @PutMapping("/update/{id_user}")
     public ResponseEntity<Users> userEdit(@PathVariable Long id_user, @Valid @RequestBody UserDTO userDTO){

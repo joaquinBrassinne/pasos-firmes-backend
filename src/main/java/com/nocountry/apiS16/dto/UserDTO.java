@@ -35,10 +35,12 @@ public class UserDTO implements Serializable {
     private String email;
 
     @Size(min = 8)
+    @NotBlank
     private String password;
 
     @Past
     private LocalDate birthday;
+
 
     @Size(min = 10, max = 11) //3571416413
     private String phoneNumber;
@@ -48,11 +50,10 @@ public class UserDTO implements Serializable {
 
     private String photoUser;
 
-
     private Long socialWorkNumber;
-
 
     private Long disabilityCertificateNumber;
 
-
+    @Size(min = 8)
+    private String repeatedPassword;
 }

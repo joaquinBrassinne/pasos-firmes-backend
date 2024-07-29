@@ -3,7 +3,9 @@ package com.nocountry.apiS16.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Users { //UserDetails representa al Usuario logeado en Spring Security
+public class Users implements UserDetails { //UserDetails representa al Usuario logeado en Spring Security
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,53 +38,56 @@ public class Users { //UserDetails representa al Usuario logeado en Spring Secur
     private Long disabilityCertificateNumber;
 
 
-
-    @OneToMany(mappedBy = "users",cascade = CascadeType.PERSIST, targetEntity = Product.class)
+    @OneToMany(mappedBy = "users",cascade = CascadeType.REMOVE, targetEntity = Product.class, orphanRemoval = true)
     @JsonManagedReference
     private List<Product> productList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, targetEntity = Comments.class)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, targetEntity = Comments.class , orphanRemoval = true)
     @JsonManagedReference
     private List<Comments> commentsList;
 
-    @OneToMany(mappedBy = "users",cascade = CascadeType.PERSIST,targetEntity = Favorites.class)
+    @OneToMany(mappedBy = "users",cascade = CascadeType.REMOVE,targetEntity = Favorites.class , orphanRemoval = true)
     @JsonManagedReference
     private List<Favorites> favoritesList;
 
-//    //Implementaciones de los metodos UserDetails
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return null;
-//    }
-//
-//
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
-//
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, targetEntity = Answers.class, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Answers> answersList;
+    //Implementaciones de los metodos UserDetails
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }
