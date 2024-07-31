@@ -1,5 +1,6 @@
 package com.nocountry.apiS16.dto;
 
+import com.nocountry.apiS16.model.Request;
 import com.nocountry.apiS16.model.State;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 @Getter
 @Setter
 @Data
@@ -27,9 +28,7 @@ public class ProductDTO implements Serializable {
     private String imageURL;
     private Long categoryId;
     private State state;
-    private String userName;
-    private String userLastName;
-    private String userEmail;
-    private String userProvince;
+    private String completeName;
+    private List<RequestDTO> requestList;
 
 }

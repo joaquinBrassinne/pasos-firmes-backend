@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+
 @Getter
 @Setter
 @Data
@@ -29,5 +31,6 @@ public class ProductGetDTO implements Serializable {
     private String userLastName;
     private String userEmail;
     private String userProvince;
+    private List<RequestDTO> requestDTOS;
 
 }

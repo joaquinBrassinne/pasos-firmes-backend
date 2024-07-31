@@ -1,6 +1,8 @@
 package com.nocountry.apiS16.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_user")
 public class Users implements UserDetails { //UserDetails representa al Usuario logeado en Spring Security
 
     @Id
@@ -39,21 +42,22 @@ public class Users implements UserDetails { //UserDetails representa al Usuario 
 
 
     @OneToMany(mappedBy = "users",cascade = CascadeType.REMOVE, targetEntity = Product.class, orphanRemoval = true)
-    @JsonManagedReference
     private List<Product> productList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, targetEntity = Comments.class , orphanRemoval = true)
-    @JsonManagedReference
     private List<Comments> commentsList;
 
     @OneToMany(mappedBy = "users",cascade = CascadeType.REMOVE,targetEntity = Favorites.class , orphanRemoval = true)
-    @JsonManagedReference
     private List<Favorites> favoritesList;
 
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, targetEntity = Answers.class, orphanRemoval = true)
-    @JsonManagedReference
     private List<Answers> answersList;
+
+    @OneToMany(mappedBy = "users",cascade = CascadeType.REMOVE, targetEntity = Request.class, orphanRemoval = true)
+    private List<Request> requestList;
+
+
     //Implementaciones de los metodos UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -27,14 +27,14 @@ public class UserDTO implements Serializable {
     @NotBlank(message = "Last Name is required")
     private String lastName;
 
-    @Size(min = 8) //44 123 321
+    @Size(min = 8, message = "min 8 characters") //44 123 321
     private String dni;
 
-    @Email
+    @Email(message = "Email valid is required")
     @NotNull(message = "Email valid is required")
     private String email;
 
-    @Size(min = 8)
+    @Size(min = 8, message = "min 8 characters")
     @NotBlank
     private String password;
 
@@ -42,7 +42,7 @@ public class UserDTO implements Serializable {
     private LocalDate birthday;
 
 
-    @Size(min = 10, max = 11) //3571416413
+    @Size(min = 10, max = 11, message = "Min 10 and max 11 characters") //3571416413
     private String phoneNumber;
 
     @NotBlank(message = "Increase a Province please!")
