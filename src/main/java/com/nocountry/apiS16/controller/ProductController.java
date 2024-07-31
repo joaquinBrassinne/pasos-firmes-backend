@@ -47,7 +47,7 @@ public class ProductController {
 
     @GetMapping("/user/{id_user}")
     public List<Product> getProductsByUserId(@PathVariable Long id_user) {
-        List<Product> products = this.getProductsByUserId(id_user);
+        List<Product> products = this.productService.getProductByIdUser(id_user);
         return products;
     }
     @PutMapping("/{id}")

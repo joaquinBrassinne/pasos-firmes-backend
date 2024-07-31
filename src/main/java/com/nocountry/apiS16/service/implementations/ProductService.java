@@ -124,8 +124,8 @@ public class ProductService {
         notificationService.createNotification(notificationDTO);
     }
 
-    List<Product> getProductByIdUser(Long id_user){
-        return this.iProductRepository.findProductsByUserId(id_user);
+    public List<Product> getProductByIdUser(Long id_user) {
+        return iProductRepository.findProductsByUserId(id_user);
     }
 
     public Product getProductByName(String name){
