@@ -23,6 +23,12 @@ public class Request {
     private LocalDate requestDay;
     private boolean requestCompleted;
     private String name;
+    private String lastName;
+    private String email;
+    private String province;
+    private String phoneNumber;
+    private Long socialWorkNumber;
+    private Long disabilityCertificateNumber;
     //private String completeNameOfUserRequested;
 
 

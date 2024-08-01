@@ -198,7 +198,13 @@ public class ProductService {
                             request.getIdRequest(),
                             request.getRequestDay(),
                             request.isRequestCompleted(),
-                            request.getName()
+                            request.getName(),
+                            request.getLastName(),
+                            request.getEmail(),
+                            request.getProvince(),
+                            request.getPhoneNumber(),
+                            request.getSocialWorkNumber(),
+                            request.getDisabilityCertificateNumber()
                     ))
                     .collect(Collectors.toList());
         }
