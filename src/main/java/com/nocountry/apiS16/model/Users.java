@@ -54,8 +54,6 @@ public class Users implements UserDetails { //UserDetails representa al Usuario 
     @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, targetEntity = Answers.class, orphanRemoval = true)
     private List<Answers> answersList;
 
-    @OneToMany(mappedBy = "users",cascade = CascadeType.REMOVE, targetEntity = Request.class, orphanRemoval = true)
-    private List<Request> requestList;
 
 
     //Implementaciones de los metodos UserDetails

@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
-
-    @Query("SELECT p FROM Product p WHERE p.name = :name")
-    Optional<Product> findByName(@Param("name") String name);
-
+    Optional<Product> findByName(String name);
     Optional<Product> findById(Long id);
 
     @Query("SELECT p FROM Product p WHERE p.users.id_user = :id_user")

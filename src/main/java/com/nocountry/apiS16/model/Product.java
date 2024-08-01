@@ -27,7 +27,6 @@ public class Product {
     private LocalDate creationDate;
     private boolean available;
     private String imageURL;
-    private String completeName;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
@@ -43,7 +42,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, targetEntity = Request.class, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, targetEntity = Request.class, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Request> requestList;
 
 }

@@ -22,14 +22,16 @@ public class Request {
     private Long idRequest;
     private LocalDate requestDay;
     private boolean requestCompleted;
-    private String completeNameOfUserRequested;
+    private String name;
+    //private String completeNameOfUserRequested;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users users;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users users;
 
 }

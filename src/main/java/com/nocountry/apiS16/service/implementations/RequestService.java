@@ -44,14 +44,14 @@ public class RequestService implements IRequestService {
         }
 
 
-        String completeName = usersOptional.get().getName() + " " + usersOptional.get().getLastName();
+        String completeName = usersOptional.get().getName();
 
         Request newRequest = Request.builder()
                 .requestDay(LocalDate.now())
                 .requestCompleted(false)
+                .name(completeName)
                 .users(usersOptional.get())
                 .product(productOptional.get())
-                .completeNameOfUserRequested(completeName)
                 .build();
 
         return this.requestRepository.save(newRequest);

@@ -47,20 +47,6 @@ public class RequestController {
         }
     }
 
-
-    @GetMapping("/get/{request_id}")
-    public ResponseEntity<Request> findRequest(@PathVariable Long request_id){
-        Request request = this.requestService.findByid(request_id);
-
-        if(request != null){
-            return new ResponseEntity<>(request, HttpStatus.OK);
-        }else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-
     @DeleteMapping("/delete/{id_request}")
     public ResponseEntity<String> deleteRequest(@PathVariable Long id_request){
         Boolean request = this.requestService.deleteRequest(id_request);

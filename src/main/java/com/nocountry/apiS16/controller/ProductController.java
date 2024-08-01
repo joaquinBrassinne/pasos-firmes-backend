@@ -26,38 +26,43 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping("/add")
-    public Product createProduct(@RequestBody ProductDTO productDTO) throws ResourceNotFoundException {
-        return this.productService.createProduct(productDTO);
+    public ProductGetDTO createProduct(@RequestBody ProductDTO productDTO) throws ResourceNotFoundException {
+        Product createdProduct = productService.createProduct(productDTO);
+        return productService.convertToProductGetDTO(createdProduct);
     }
 
     @GetMapping("/get")
-    public List<Product> getAllProducts() {
-        List<Product> products = productService.getProducts();
-        if (products.isEmpty()) {
+    public List<ProductDTO> getAllProducts() {
+        List<ProductDTO> productDTOs = productService.getAllProductDTOs();
+        if (productDTOs.isEmpty()) {
             return new ArrayList<>();
         }
-        return products;
+        return productDTOs;
 
     }
 
     @GetMapping("/get/name/{name}")
-    public Product getProductByName(@PathVariable String name) throws ResourceNotFoundException {
+    public ProductGetDTO getProductByName(@PathVariable String name) throws ResourceNotFoundException {
         return productService.getProductByName(name);
     }
 
     @GetMapping("/user/{id_user}")
-    public List<Product> getProductsByUserId(@PathVariable Long id_user) {
-        List<Product> products = this.productService.getProductByIdUser(id_user);
-        return products;
+    public ResponseEntity<List<ProductDTO>> getProductsByUserId(@PathVariable Long id_user) {
+        List<ProductDTO> products = productService.getProductsByUserId(id_user);
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        }
     }
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) throws ResourceNotFoundException{
+    public ProductGetDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) throws ResourceNotFoundException{
         Product updatedProduct = productService.updateProduct(id, productDTO);
-        return updatedProduct;
+        return productService.convertToProductGetDTO(updatedProduct);
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) throws ResourceNotFoundException {
+    public ProductGetDTO getProductById(@PathVariable Long id) throws ResourceNotFoundException {
         return productService.getProductById(id); // Retorna directamente el ProductDTO
     }
 //    public ProductDTO getProductById(@PathVariable Long id) throws ResourceNotFoundException {
@@ -80,24 +85,24 @@ public class ProductController {
         return ResponseEntity.ok("Producto solicitado con exito");
     }   
 
-//    @PutMapping("/disable/{idProduct}")
-//    public ResponseEntity<String> disabledProduct(@PathVariable Long idProduct) throws ResourceNotFoundException {
-//        ProductDTO newProduct = new ProductDTO();
-//        Product product = productService.getProductById(idProduct);
-//        newProduct.setName(product.getName());
-//        newProduct.setIdUser(product.getIdUser());
-//        newProduct.setDescription(product.getDescription());
-//        newProduct.setCreationDate(LocalDate.parse(product.getCreationDate()));
-//        newProduct.setAvailable(false);
-//        newProduct.setImageURL(product.getImageURL());
-//        newProduct.setCategoryId(product.getCategoryId());
-//        newProduct.setState(product.getState());
-//        newProduct.setUserName(product.getUserName());
-//        newProduct.setUserLastName(product.getUserLastName());
-//        newProduct.setUserEmail(product.getUserEmail());
-//        newProduct.setUserProvince(product.getUserProvince());
-//        productService.updateProduct(idProduct, newProduct);
-//
-//        return ResponseEntity.ok("Producto desabilitado con exito");
-//    }
+    @PutMapping("/disable/{idProduct}")
+    public ResponseEntity<String> disabledProduct(@PathVariable Long idProduct) throws ResourceNotFoundException {
+        ProductDTO newProduct = new ProductDTO();
+        ProductGetDTO product = productService.getProductById(idProduct);
+        newProduct.setName(product.getName());
+        newProduct.setIdUser(product.getIdUser());
+        newProduct.setDescription(product.getDescription());
+        newProduct.setCreationDate(LocalDate.parse(product.getCreationDate()));
+        newProduct.setAvailable(false);
+        newProduct.setImageURL(product.getImageURL());
+        newProduct.setCategoryId(product.getCategoryId());
+        newProduct.setState(product.getState());
+        newProduct.setUserName(product.getUserName());
+        newProduct.setUserLastName(product.getUserLastName());
+        newProduct.setUserEmail(product.getUserEmail());
+        newProduct.setUserProvince(product.getUserProvince());
+        productService.updateProduct(idProduct, newProduct);
+
+        return ResponseEntity.ok("Producto desabilitado con exito");
+    }
 }
